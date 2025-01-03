@@ -67,6 +67,81 @@ class MarvelMovieBookingSystem {
         System.out.println("2. Buy 10 or more Tickets for a 20% Discount.");
     }
 
+    private void bookTickets(Scanner scanner) {
+        System.out.println("\nChoose a movie to book tickets for:");
+        for (int i = 0; i < MOVIES.length; i++) {
+            System.out.printf("%d. %s\n", (i + 1), MOVIES[i]);
+        }
+
+        int movieChoice = scanner.nextInt() - 1;
+        if (movieChoice < 0 || movieChoice >= MOVIES.length) {
+            System.out.println("Invalid movie choice! Returning to main menu.");
+            return;
+        }
+
+        int bookedSeats = ticketSales[movieChoice];
+        int availableSeats = seats[movieChoice].length - bookedSeats;
+
+        if (availableSeats == 0) {
+            System.out.println("Sorry, this movie is house-full. Please choose another movie.");
+            return;
+        }
+
+        System.out.println("\nEnter the number of tickets to book: ");
+        int numTickets = scanner.nextInt();
+        if (numTickets <= 0 || numTickets > availableSeats) {
+            System.out.printf("Invalid number of tickets! Only %d seats are available.\n", availableSeats);
+            return;
+        }
+
+        int freeTickets = 0;
+        double discount = 0.0;
+        if (numTickets >= 5 && numTickets < 10) {
+            freeTickets = 1;
+        } else if (numTickets >= 10) {
+            discount = 0.2;
+        }
+
+        int totalTickets = numTickets + freeTickets;
+        int totalPrice = numTickets * BASE_TICKET_PRICE;
+        totalPrice -= totalPrice * discount;
+
+        System.out.println("\nSelect facilities (optional, additional charges may apply):");
+        for (int i = 0; i < FACILITIES.length; i++) {
+            System.out.printf("%d. %s (+ Rs. 50)\n", (i + 1), FACILITIES[i]);
+        }
+        System.out.print("Enter the numbers separated by space (or 0 for no facilities): ");
+        scanner.nextLine();
+        String facilityChoices = scanner.nextLine();
+        int facilityCharges = 0;
+
+        if (!facilityChoices.equals("0")) {
+            String[] choices = facilityChoices.split(" ");
+            for (String choice : choices) {
+                int facilityIndex = Integer.parseInt(choice) - 1;
+                if (facilityIndex >= 0 && facilityIndex < FACILITIES.length) {
+                    facilityCharges += 50;
+                }
+            }
+        }
+
+        totalPrice += facilityCharges;
+
+        for (int i = bookedSeats; i < bookedSeats + numTickets; i++) {
+            seats[movieChoice][i] = 1;
+        }
+        ticketSales[movieChoice] += numTickets;
+
+        System.out.printf("\nBooking successful! Total Price: Rs. %d\n", totalPrice);
+        System.out.printf("You booked %d tickets (including %d free tickets) for '%s'.\n",
+                totalTickets, freeTickets, MOVIES[movieChoice]);
+
+        if (discount > 0) {
+            System.out.printf("You received a 20%% discount, saving Rs. %.2f!\n", numTickets * BASE_TICKET_PRICE * discount);
+        }
+
+        processPayment(scanner, totalPrice);
+    }
 
 
     public void mainMenu() {
