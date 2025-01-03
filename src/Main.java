@@ -143,6 +143,34 @@ class MarvelMovieBookingSystem {
         processPayment(scanner, totalPrice);
     }
 
+    private void processPayment(Scanner scanner, int totalPrice) {
+        Random random = new Random();
+        int randomCardNumber = 1000 + random.nextInt(9000);
+        int randomPassword = 1000 + random.nextInt(9000);
+
+        System.out.println("\nPayment Options:");
+        System.out.println("1. Debit Card");
+        System.out.println("2. Credit Card");
+        System.out.print("Choose your payment method: ");
+        int paymentChoice = scanner.nextInt();
+
+        if (paymentChoice != 1 && paymentChoice != 2) {
+            System.out.println("Invalid payment choice! Returning to main menu.");
+            return;
+        }
+
+        System.out.println("\nPayment Details:");
+        System.out.printf("Card Number (Sample): %d\n", randomCardNumber);
+        System.out.print("Enter your card number: ");
+        scanner.next();
+
+        System.out.printf("Password (Sample): %d\n", randomPassword);
+        System.out.print("Enter your password: ");
+        scanner.next();
+
+        System.out.printf("\nPayment Successful! Rs. %d has been debited from your account.\n", totalPrice);
+        System.out.println("Thank you for booking with the QFX Booking! Enjoy your movie!");
+    }
 
     public void mainMenu() {
         Scanner scanner = new Scanner(System.in);
