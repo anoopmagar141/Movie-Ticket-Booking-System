@@ -32,6 +32,24 @@ class MarvelMovieBookingSystem {
         }
     }
 
+    private void preBookSeats() {
+        Random random = new Random();
+        for (int i = 0; i < MOVIES.length; i++) {
+            if (i < 2) {
+                for (int j = 0; j < seats[i].length; j++) {
+                    seats[i][j] = 1;
+                }
+                ticketSales[i] = seats[i].length;
+            } else {
+                int randomSeats = random.nextInt(25);
+                for (int j = 0; j < randomSeats; j++) {
+                    seats[i][j] = 1;
+                }
+                ticketSales[i] = randomSeats;
+            }
+        }
+    }
+
 
     public void mainMenu() {
         Scanner scanner = new Scanner(System.in);
