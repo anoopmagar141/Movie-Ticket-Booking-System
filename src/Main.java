@@ -50,6 +50,24 @@ class MarvelMovieBookingSystem {
         }
     }
 
+    private void viewMoviesAndSeats() {
+        System.out.println("\nMarvel Movies and Seat Availability:");
+        for (int i = 0; i < MOVIES.length; i++) {
+            int bookedSeats = ticketSales[i];
+            int availableSeats = seats[i].length - bookedSeats;
+            System.out.printf("%d. %s - %s\n",
+                    (i + 1), MOVIES[i],
+                    availableSeats == 0 ? "House Full" : "Available Seats: " + availableSeats + ", Booked Seats: " + bookedSeats);
+        }
+    }
+
+    private void viewOffers() {
+        System.out.println("\nCurrent Offers:");
+        System.out.println("1. Buy 5 Tickets, Get 1 Free.");
+        System.out.println("2. Buy 10 or more Tickets for a 20% Discount.");
+    }
+
+
 
     public void mainMenu() {
         Scanner scanner = new Scanner(System.in);
